@@ -1,0 +1,40 @@
+spring :
+  # mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/chat_example?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 1234
+
+  # jpa
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        default_batch_fetch_size: 100
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+  # rabbitmq
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  # redis
+  data :
+    redis:
+      host: localhost
+      port: 6379
+
+    # mongodb
+    mongodb:
+      username: root
+      password: root
+      host: localhost
+      port: 27017
+      database: techtalk
+      authentication-database: admin
+      auto-index-creation: true
