@@ -21,7 +21,7 @@ public class ChatRoom {
     private LocalDateTime createdAt;
 
     private String title;
-    private String ownerId;
+    private Long ownerId;
     private List<Long> participants = new ArrayList<>();
     private List<Message> recentMessages = new ArrayList<>();
     private List<Message> backupMessages = new ArrayList<>();
@@ -40,7 +40,7 @@ public class ChatRoom {
         }
     }
 
-    public ChatRoom(String title, String ownerId, List<Long> participants) {
+    public ChatRoom(String title, Long ownerId, List<Long> participants) {
         this.title = title;
         this.ownerId = ownerId;
         this.participants = participants;
