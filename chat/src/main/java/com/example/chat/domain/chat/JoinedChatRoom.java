@@ -24,4 +24,9 @@ public class JoinedChatRoom {
     @JoinColumn(name = "profile_id")
     Profile profile;
 
+    public JoinedChatRoom(String chatRoomId, Profile profile) {
+        this.chatRoomId = chatRoomId;
+        this.lastAccessTime = LocalDateTime.now();
+        this.profile = profile;
+    }
 }

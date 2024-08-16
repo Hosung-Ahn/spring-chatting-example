@@ -17,4 +17,12 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JoinedChatRoom> joinedChatRooms;
+
+    public void appendChatRoom(String chatRoomId) {
+        joinedChatRooms.add(new JoinedChatRoom(chatRoomId, this));
+    }
+
+    public void removeChatRoom(String chatRoomId) {
+        joinedChatRooms.removeIf(joinedChatRoom -> joinedChatRoom.getChatRoomId().equals(chatRoomId));
+    }
 }

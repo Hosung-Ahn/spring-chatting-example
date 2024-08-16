@@ -12,7 +12,12 @@ public class ChatRoomRepository {
     private static final Integer RECENT_MESSAGE_LIMIT = 100;
     private static final Integer BACKUP_MESSAGE_LIMIT = 10000;
 
-    public void save(ChatRoom chatRoom) {
+    public String save(ChatRoom chatRoom) {
         mongoTemplate.save(chatRoom);
+        return chatRoom.getId();
+    }
+
+    public ChatRoom findById(String chatRoomId) {
+        return mongoTemplate.findById(chatRoomId, ChatRoom.class);
     }
 }
