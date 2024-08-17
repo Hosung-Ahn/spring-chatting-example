@@ -28,16 +28,21 @@ public class ChatRoomService {
     }
 
     public void joinChatRoom(String chatRoomId, Long memberId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId);
+        ChatRoom chatRoom = chatRoomRepository.findByIdWithOutMessages(chatRoomId);
         chatRoom.getParticipants().add(memberId);
         chatRoomRepository.save(chatRoom);
         chatProfileRepository.appendChatRoom(memberId, chatRoomId);
     }
 
     public void exitChatRoom(String chatRoomId, Long memberId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId);
+        ChatRoom chatRoom = chatRoomRepository.findByIdWithOutMessages(chatRoomId);
         chatRoom.leave(memberId);
-        chatRoomRepository.save(chatRoom);
+        // 채팅방에 유저가 한명도 남지 않은 상황이라면 채팅방 삭제
+        if (chatRoom.getParticipants().isEmpty()) {
+            chatRoomRepository.delete(chatRoomId);
+        } else {
+            chatRoomRepository.save(chatRoom);
+        }
 
         chatProfileRepository.removeChatRoom(memberId, chatRoomId);
     }

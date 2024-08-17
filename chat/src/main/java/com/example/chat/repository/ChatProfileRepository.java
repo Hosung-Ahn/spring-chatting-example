@@ -24,7 +24,7 @@ public class ChatProfileRepository {
         profile.removeChatRoom(chatRoomId);
     }
 
-    private Profile findById(Long id) {
+    public Profile findById(Long id) {
         return query
                 .selectFrom(profile)
                 .where(profile.id.eq(id))
