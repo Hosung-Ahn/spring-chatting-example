@@ -1,6 +1,5 @@
 package com.example.chat.repository;
 
-import com.example.chat.domain.chat.JoinedChatRoom;
 import com.example.chat.domain.member.Profile;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;

@@ -45,4 +45,8 @@ public class ChatRoom {
         this.ownerId = ownerId;
         this.participants = participants;
     }
+
+    public void leave(Long memberId) {
+        participants.remove(memberId);
+    }
 }
