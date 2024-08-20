@@ -46,4 +46,28 @@ public class ChatRoomRepository {
         Update update = new Update().set("deleted", true);
         mongoTemplate.updateFirst(query, update, ChatRoom.class);
     }
+
+    public void appendMessage(String chatRoomId, ChatRoom.Message message) {
+        appendRecentMessage(chatRoomId, message);
+        appendBackupMessage(chatRoomId, message);
+    }
+
+    private void appendRecentMessage(String chatRoomId, ChatRoom.Message message) {
+        Query query = new Query(Criteria.where("_id").is(chatRoomId));
+        Update update = new Update()
+                .push("recentMessages")
+                .slice(-RECENT_MESSAGE_LIMIT)
+                .each(message);
+        mongoTemplate.upsert(query, update, ChatRoom.class);
+    }
+
+    private void appendBackupMessage(String chatRoomId, ChatRoom.Message message) {
+        Query query = new Query(Criteria.where("_id").is(chatRoomId));
+        Update update = new Update()
+                .push("backupMessages")
+                .slice(-BACKUP_MESSAGE_LIMIT)
+                .each(message);
+        mongoTemplate.upsert(query, update, ChatRoom.class);
+    }
+
 }

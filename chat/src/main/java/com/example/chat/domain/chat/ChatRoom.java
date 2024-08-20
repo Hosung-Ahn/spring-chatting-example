@@ -1,5 +1,6 @@
 package com.example.chat.domain.chat;
 
+import com.example.chat.dto.websocket.ChatMessageReceiveDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,11 @@ public class ChatRoom {
             this.senderId = senderId;
             this.content = content;
             this.sendTime = LocalDateTime.now();
+        }
+
+        public Message(ChatMessageReceiveDto chatDto) {
+            this.senderId = chatDto.getSenderId();
+            this.content = chatDto.getContent();
         }
     }
 
