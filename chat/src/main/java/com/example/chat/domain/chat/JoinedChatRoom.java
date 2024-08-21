@@ -29,4 +29,8 @@ public class JoinedChatRoom {
         this.lastAccessTime = LocalDateTime.now();
         this.profile = profile;
     }
+
+    public void updateLastAccessTime() {
+        this.lastAccessTime = LocalDateTime.now();
+    }
 }
