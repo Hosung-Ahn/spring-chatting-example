@@ -18,6 +18,6 @@ public class ChatRoomListInfoDto {
         this.memberCount = chatRoom.getParticipants().size();
         this.ownerId = chatRoom.getOwnerId();
         this.unreadCount = unreadCount;
-        this.lastMessage = chatRoom.getRecentMessages().get(chatRoom.getRecentMessages().size() - 1);
+        this.lastMessage = chatRoom.getRecentMessage();
     }
 }
