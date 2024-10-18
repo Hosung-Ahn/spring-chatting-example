@@ -34,19 +34,19 @@ public class ChatRoomViewService {
         Long ownerId = chatRoomWithRecentMessages.getOwnerId();
         List<Long> participants = chatRoomWithRecentMessages.getParticipants();
 
-        List<ChatRoom.Message> messages = chatRoomWithRecentMessages.getRecentMessages();
+        List<ChatRoom.Message> messages = chatRoomWithRecentMessages.getMessages();
         Integer unreadMessageCount = countUnreadMessage(messages, lastAccessTime);
         // 최신 메세지에서 읽지 않은 메세지를 모두 찾을 수 있으면 최신 메세지만 리턴
         if (unreadMessageCount < RECENT_MESSAGE_LIMIT) {
 
             return new ChatRoomViewResponseDto(
                     title, ownerId, participants,
-                    chatRoomWithRecentMessages.getRecentMessages(), unreadMessageCount
+                    chatRoomWithRecentMessages.getMessages(), unreadMessageCount
             );
         // 읽지 않은 메세지가 최신 메세지를 넘어 백업 메세지까지 존재한다면 백업 메세지 중 읽지 않은 메세지를 리턴
         } else {
             ChatRoom chatRoomWithBackupMessages = chatRoomRepository.findByIdWithBackupMessages(chatRoomId);
-            messages = chatRoomWithBackupMessages.getBackupMessages();
+            messages = chatRoomWithBackupMessages.getMessages();
             unreadMessageCount = countUnreadMessage(messages, lastAccessTime);
 
             List<ChatRoom.Message> unreadMessages = getUnreadMessages(messages, unreadMessageCount);
@@ -83,7 +83,7 @@ public class ChatRoomViewService {
         for (JoinedChatRoom joinedChatRoom : profile.getJoinedChatRooms()) {
             String chatRoomId = joinedChatRoom.getChatRoomId();
             ChatRoom chatRoom = chatRoomRepository.findByIdWithRecentMessages(chatRoomId);
-            Integer unreadMessageCount = countUnreadMessage(chatRoom.getRecentMessages(), joinedChatRoom.getLastAccessTime());
+            Integer unreadMessageCount = countUnreadMessage(chatRoom.getMessages(), joinedChatRoom.getLastAccessTime());
             chatRoomList.add(new ChatRoomListInfoDto(chatRoom, unreadMessageCount));
         }
         sortByLastMessageTime(chatRoomList);

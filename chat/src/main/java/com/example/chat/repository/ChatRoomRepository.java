@@ -15,6 +15,8 @@ public class ChatRoomRepository {
     private static final Integer RECENT_MESSAGE_LIMIT = 100;
     private static final Integer BACKUP_MESSAGE_LIMIT = 10000;
 
+    private static final String MESSAGE_FIELD = "messages";
+
     public String save(ChatRoom chatRoom) {
         mongoTemplate.save(chatRoom);
         return chatRoom.getId();
@@ -22,7 +24,7 @@ public class ChatRoomRepository {
 
     public ChatRoom findByIdWithRecentMessages(String chatRoomId) {
         Query query = new Query(Criteria.where("_id").is(chatRoomId));
-        query.fields().exclude("backupMessages");
+        query.fields().slice(MESSAGE_FIELD, RECENT_MESSAGE_LIMIT);
         return mongoTemplate.findOne(query, ChatRoom.class);
     }
 
@@ -32,7 +34,7 @@ public class ChatRoomRepository {
 
     public ChatRoom findByIdWithOutMessages(String chatRoomId) {
         Query query = new Query(Criteria.where("_id").is(chatRoomId));
-        query.fields().exclude("recentMessages", "backupMessages");
+        query.fields().exclude(MESSAGE_FIELD);
         return mongoTemplate.findOne(query, ChatRoom.class);
     }
 
@@ -48,23 +50,9 @@ public class ChatRoomRepository {
     }
 
     public void appendMessage(String chatRoomId, ChatRoom.Message message) {
-        appendRecentMessage(chatRoomId, message);
-        appendBackupMessage(chatRoomId, message);
-    }
-
-    private void appendRecentMessage(String chatRoomId, ChatRoom.Message message) {
         Query query = new Query(Criteria.where("_id").is(chatRoomId));
         Update update = new Update()
-                .push("recentMessages")
-                .slice(-RECENT_MESSAGE_LIMIT)
-                .each(message);
-        mongoTemplate.upsert(query, update, ChatRoom.class);
-    }
-
-    private void appendBackupMessage(String chatRoomId, ChatRoom.Message message) {
-        Query query = new Query(Criteria.where("_id").is(chatRoomId));
-        Update update = new Update()
-                .push("backupMessages")
+                .push(MESSAGE_FIELD)
                 .slice(-BACKUP_MESSAGE_LIMIT)
                 .each(message);
         mongoTemplate.upsert(query, update, ChatRoom.class);

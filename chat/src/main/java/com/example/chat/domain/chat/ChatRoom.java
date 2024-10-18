@@ -24,8 +24,7 @@ public class ChatRoom {
     private String title;
     private Long ownerId;
     private List<Long> participants = new ArrayList<>();
-    private List<Message> recentMessages = new ArrayList<>();
-    private List<Message> backupMessages = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
     @Getter
     @NoArgsConstructor
