@@ -16,6 +16,7 @@ public class ChatRoomRepository {
     private static final Integer BACKUP_MESSAGE_LIMIT = 10000;
 
     private static final String MESSAGE_FIELD = "messages";
+    private static final String RECENT_MESSAGE_FIELD = "recentMessage";
 
     public String save(ChatRoom chatRoom) {
         mongoTemplate.save(chatRoom);
@@ -58,4 +59,9 @@ public class ChatRoomRepository {
         mongoTemplate.upsert(query, update, ChatRoom.class);
     }
 
+    public void updateRecentMessage(String chatRoomId, ChatRoom.Message message) {
+        Query query = new Query(Criteria.where("_id").is(chatRoomId));
+        Update update = new Update().set(RECENT_MESSAGE_FIELD, message);
+        mongoTemplate.updateFirst(query, update, ChatRoom.class);
+    }
 }

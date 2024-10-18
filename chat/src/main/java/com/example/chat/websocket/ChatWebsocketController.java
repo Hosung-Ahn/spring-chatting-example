@@ -19,6 +19,7 @@ public class ChatWebsocketController {
     public void send(ChatMessageReceiveDto chatDto, @DestinationVariable String chatRoomId) {
         ChatRoom.Message message = new ChatRoom.Message(chatDto);
         chatRoomRepository.appendMessage(chatRoomId, message);
+        chatRoomRepository.updateRecentMessage(chatRoomId, message);
         rabbitMQPublishService.publishChatMessage(chatRoomId, message);
     }
 }
