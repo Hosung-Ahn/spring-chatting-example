@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Document
 @Getter
@@ -30,11 +31,13 @@ public class ChatRoom {
     @Getter
     @NoArgsConstructor
     public static class Message {
+        private String id;
         private Long senderId;
         private LocalDateTime sendTime;
         private String content;
 
         public Message(Long senderId, String content) {
+            this.id = UUID.randomUUID().toString();
             this.senderId = senderId;
             this.content = content;
             this.sendTime = LocalDateTime.now();
